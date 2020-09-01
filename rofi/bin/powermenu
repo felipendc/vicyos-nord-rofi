@@ -1,0 +1,107 @@
+#!/bin/bash
+
+## Author : Aditya Shakya (adi1090x)
+## Mail : adi1090x@gmail.com
+## Github : @adi1090x
+## Reddit : @adi1090x
+
+##*******************************************************************************
+## This file was adapted for Vicyos-Nord by (Felipe Ndc) felipendc10@gmail.com
+##******************************************************************************
+
+
+# Available Styles
+# >> Styles Below Only Works With "rofi-git(AUR)", Tested On Version: 1.5.4-76-gca067234
+# full     full_circle     full_rounded     full_alt
+# card     card_circle     column     column_circle
+# row     row_alt     row_circle
+# single     single_circle     single_full     single_full_circle     single_rounded     single_text
+
+## Default
+#DIR="forest"
+#STYLE="powermenu"
+
+#rofi_command="rofi -theme $DIR/$STYLE.rasi"
+rofi_command="rofi -theme ArcoLinux-Nord.rasi"
+
+
+uptime=$(uptime -p | sed -e 's/up //g')
+
+# Options
+if [[ "$DIR" == "powermenus" ]]; then
+	shutdown=""
+	reboot=""
+	lock=""
+	suspend=""
+	logout=""
+	ddir="$HOME/.config/rofi/$DIR"
+else
+	shutdown=" Shutdown"
+	reboot=" Restart"
+	lock=" Lock"
+	suspend=" Sleep"
+	logout=" Logout"
+	ddir="$HOME/.config/rofi/dialogs"
+fi
+
+rdialog () {
+rofi -dmenu\
+    -i\
+    -no-fixed-num-lines\
+    -p "Are You Sure? : "\
+    -theme "ArcoLinux-Nord.rasi"
+}
+
+# Variable passed to rofi
+MSG="    Ops! Don't worry. Next time, you can enter one of these options: yes/no/y/n"
+options="$lock\n$suspend\n$logout\n$reboot\n$shutdown"
+
+chosen="$(echo -e "$options" | $rofi_command -p "Uptime: $uptime... I hope to see you soon!" -dmenu -selected-row 0)"
+case $chosen in
+    $shutdown)
+		ans=$(rdialog)
+		if [[ $ans == "yes" ]] || [[ $ans == "YES" ]] || [[ $ans == "y" ]] || [[ $ans == "Y" ]]; then
+        systemctl poweroff
+		elif [[ $ans == "no" ]] || [[ $ans == "NO" ]] || [[ $ans == "n" ]] || [[ $ans == "N" ]]; then
+        exit
+        else
+        rofi -theme "vicyos-confirm.rasi" -e "$MSG"
+        fi
+        ;;
+    $reboot)
+		ans=$(rdialog)
+		if [[ $ans == "yes" ]] || [[ $ans == "YES" ]] || [[ $ans == "y" ]] || [[ $ans == "Y" ]]; then
+        systemctl reboot
+		elif [[ $ans == "no" ]] || [[ $ans == "NO" ]] || [[ $ans == "n" ]] || [[ $ans == "N" ]]; then
+        exit
+        else
+        rofi -theme "vicyos-confirm.rasi" -e "$MSG"
+        fi
+        ;;
+    $lock)
+        betterlockscreen --lock
+        ;;
+    $suspend)
+		ans=$(rdialog)
+		if [[ $ans == "yes" ]] || [[ $ans == "YES" ]] || [[ $ans == "y" ]] || [[ $ans == "Y" ]]; then
+        mpc -q pause
+        amixer set Master mute
+        betterlockscreen --suspend
+		elif [[ $ans == "no" ]] || [[ $ans == "NO" ]] || [[ $ans == "n" ]] || [[ $ans == "N" ]]; then
+        exit
+        else
+        rofi -theme "vicyos-confirm.rasi" -e "$MSG"
+        fi
+        ;;
+    $logout)
+		ans=$(rdialog)
+		if [[ $ans == "yes" ]] || [[ $ans == "YES" ]] || [[ $ans == "y" ]] || [[ $ans == "Y" ]]; then
+        bspc quit
+		elif [[ $ans == "no" ]] || [[ $ans == "NO" ]] || [[ $ans == "n" ]] || [[ $ans == "N" ]]; then
+        exit
+        else
+        rofi -theme "vicyos-confirm.rasi" -e "$MSG"
+        fi
+        ;;
+esac
+

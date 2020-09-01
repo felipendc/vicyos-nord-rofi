@@ -1,0 +1,39 @@
+/*******************************************************************************
+*  Author : Aditya Shakya (adi1090x)
+*  Mail : adi1090x@gmail.com
+*  Github : @adi1090x
+*  Reddit : @adi1090x
+ ******************************************************************************/
+
+ 
+/*******************************************************************************
+ * This file was adapted for Vicyos-Nord by (Felipe Ndc) felipendc10@gmail.com
+ ******************************************************************************/
+
+//----------------------
+// Colors
+//----------------------
+
+
+* {
+    background-color:       rgba(46, 52, 64, 100%);
+    text-color:             #D8DEE9;
+	font:				 	"Terminus 12";
+}
+
+window {
+    width:      			635px;
+    padding:    			30px;
+    border:					4px;
+    border-radius:          0px;
+    border-color:           #5E81AC;
+    location:               center;
+    x-offset:               0;
+    y-offset:               -8%;
+}
+
+entry {
+    expand: 				true;
+    width: 					150px;
+    text-color:				#D8DEE9; 
+}
