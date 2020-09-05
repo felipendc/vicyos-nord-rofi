@@ -79,7 +79,7 @@ case $chosen in
         fi
         ;;
     $lock)
-        betterlockscreen --lock
+        betterlockscreen --lock blur
         ;;
     $suspend)
 		ans=$(rdialog)
